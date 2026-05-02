@@ -1,14 +1,15 @@
-﻿namespace Catel.Examples.ViewModelLifetime.ViewModels
+﻿namespace Catel.Examples.ViewModelLifetime.ViewModels;
+
+using System;
+using MVVM;
+
+public class CreateTabWindowViewModel : ViewModelBase
 {
-    using MVVM;
-
-    public class CreateTabWindowViewModel : ViewModelBase
+    public CreateTabWindowViewModel(IServiceProvider serviceProvider)
+        : base(serviceProvider)
     {
-        public CreateTabWindowViewModel()
-        {
-            Title = "Create new tab";
-        }
-
-        public bool CloseWhenUnloaded { get; set; }
+        Title = "Create new tab";
     }
+
+    public bool CloseWhenUnloaded { get; set; }
 }

@@ -1,13 +1,6 @@
-﻿namespace Catel.Examples.Authentication.Views
-{
-    using Windows;
+﻿namespace Catel.Examples.Authentication.Views;
 
-    public partial class ExampleView
-    {
-        public ExampleView()
-            : base(DataWindowMode.Close)
-        {
-            InitializeComponent();
-        }
-    }
+public partial class ExampleView
+{
+
 }

@@ -1,24 +1,60 @@
-﻿namespace Catel.Examples.MultiLingual
+﻿namespace Catel.Examples.MultiLingual;
+
+using System.Globalization;
+using System.Threading;
+using System.Windows;
+using Catel.Examples.MultiLingual.Views;
+using Catel.Services;
+using IoC;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+
+public partial class App : Application
 {
-    using System.Globalization;
-    using System.Threading;
-    using System.Windows;
-    using Catel.Services;
-    using IoC;
+#pragma warning disable IDISP006 // Implement IDisposable
+    private readonly IHost _host;
+#pragma warning restore IDISP006 // Implement IDisposable
 
-    public partial class App : Application
+    public App()
     {
-        public App()
+        Thread.CurrentThread.CurrentUICulture = new CultureInfo(MultiLingual.Properties.Settings.Default.DefaultLanguage);
+
+        var hostBuilder = new HostBuilder()
+            .ConfigureServices((hostContext, services) =>
+            {
+                services.AddCatelCore();
+                services.AddCatelMvvm();
+
+                services.AddSingleton<ILanguageService, Services.LanguageService>();
+
+                services.AddLogging(x =>
+                {
+                    x.AddConsole();
+                    x.AddDebug();
+                });
+            });
+
+        _host = hostBuilder.Build();
+
+        IoCContainer.ServiceProvider = _host.Services;
+    }
+
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+
+        var mainWindow = ActivatorUtilities.CreateInstance<MainWindow>(_host.Services);
+        mainWindow.Show();
+    }
+
+    protected override async void OnExit(ExitEventArgs e)
+    {
+        using (_host)
         {
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(MultiLingual.Properties.Settings.Default.DefaultLanguage);
+            await _host.StopAsync();
         }
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            var serviceLocator = ServiceLocator.Default;
-            serviceLocator.RegisterType<ILanguageService, Services.LanguageService>();
-
-            base.OnStartup(e);
-        }
+        base.OnExit(e);
     }
 }

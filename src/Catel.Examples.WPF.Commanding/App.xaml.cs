@@ -1,34 +1,74 @@
-﻿namespace Catel.Examples.Commanding
+﻿namespace Catel.Examples.Commanding;
+
+using System.Windows;
+using System.Windows.Input;
+using Catel.Examples.Commanding.Views;
+using Catel.IoC;
+using Catel.Reflection;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using MVVM;
+using InputGesture = Windows.Input.InputGesture;
+
+public partial class App : Application
 {
-    using System.Windows;
-    using System.Windows.Input;
-    using Catel.Reflection;
-    using IoC;
-    using MVVM;
-    using InputGesture = Windows.Input.InputGesture;
+#pragma warning disable IDISP006 // Implement IDisposable
+    private readonly IHost _host;
+#pragma warning restore IDISP006 // Implement IDisposable
 
-    public partial class App : Application
+    public App()
     {
-        protected override void OnStartup(StartupEventArgs e)
+        var hostBuilder = new HostBuilder()
+            .ConfigureServices((hostContext, services) =>
+            {
+                services.AddCatelCore();
+                services.AddCatelMvvm();
+
+                services.AddLogging(x =>
+                {
+                    x.AddConsole();
+                    x.AddDebug();
+
+                    services.AddLogging(x =>
+                    {
+                        x.AddConsole();
+                        x.AddDebug();
+                    });
+                });
+            });
+
+        _host = hostBuilder.Build();
+
+        IoCContainer.ServiceProvider = _host.Services;
+    }
+
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+
+        TypeCache.InitializeTypes(typeof(App).Assembly);
+
+        // Registered as command
+        var commandManager = _host.Services.GetRequiredService<ICommandManager>();
+        commandManager.CreateCommand(Commands.Refresh, new InputGesture(Key.F5));
+
+        // Registered in command container
+        commandManager.CreateCommandWithGesture(_host.Services, typeof(Commands), Commands.GlobalAction);
+        commandManager.CreateCommandWithGesture(_host.Services, typeof(Commands), Commands.Test1);
+        commandManager.CreateCommandWithGesture(_host.Services, typeof(Commands), Commands.Test2);
+
+        var mainWindow = ActivatorUtilities.CreateInstance<MainWindow>(_host.Services);
+        mainWindow.Show();
+    }
+
+    protected override async void OnExit(ExitEventArgs e)
+    {
+        using (_host)
         {
-#if DEBUG
-            Catel.Logging.LogManager.AddDebugListener();
-#endif
-
-            base.OnStartup(e);
-
-            var dependencyResolver = this.GetDependencyResolver();
-
-            TypeCache.InitializeTypes(typeof(App).Assembly);
-
-            // Registered as command
-            var commandManager = dependencyResolver.Resolve<ICommandManager>();
-            commandManager.CreateCommand(Commands.Refresh, new InputGesture(Key.F5));
-
-            // Registered in command container
-            commandManager.CreateCommandWithGesture(typeof(Commands), Commands.GlobalAction);
-            commandManager.CreateCommandWithGesture(typeof(Commands), Commands.Test1);
-            commandManager.CreateCommandWithGesture(typeof(Commands), Commands.Test2);
+            await _host.StopAsync();
         }
+
+        base.OnExit(e);
     }
 }

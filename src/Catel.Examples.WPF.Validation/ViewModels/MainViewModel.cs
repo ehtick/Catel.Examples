@@ -1,56 +1,58 @@
-﻿namespace Catel.Examples.Validation.ViewModels
+﻿namespace Catel.Examples.Validation.ViewModels;
+
+using System;
+using System.Threading.Tasks;
+using MVVM;
+using Services;
+
+public class MainWindowViewModel : ViewModelBase
 {
-    using System;
-    using System.Threading.Tasks;
-    using MVVM;
-    using Services;
+    private readonly IServiceProvider _serviceProvider;
+    private readonly IUIVisualizerService _uiVisualizerService;
 
-    public class MainWindowViewModel : ViewModelBase
+    public MainWindowViewModel(IServiceProvider serviceProvider, IUIVisualizerService uiVisualizerService)
+        : base(serviceProvider)
     {
-        private readonly IUIVisualizerService _uiVisualizerService;
+        ArgumentNullException.ThrowIfNull(uiVisualizerService);
+        _serviceProvider = serviceProvider;
+        _uiVisualizerService = uiVisualizerService;
 
-        public MainWindowViewModel(IUIVisualizerService uiVisualizerService)
+        OpenValidationViaValidateMethods = new TaskCommand(serviceProvider, OnOpenValidationViaValidateMethodsExecuteAsync);
+        OpenValidationViaDataAnnotations = new TaskCommand(serviceProvider, OnOpenValidationViaDataAnnotationsExecuteAsync);
+        OpenValidationInModel = new TaskCommand(serviceProvider, OnOpenValidationInModelExecuteAsync);
+
+        Title = "Validation example";
+    }
+
+    public bool EnableDeferValidationUntilFirstSave { get; set; }
+
+    public TaskCommand OpenValidationViaValidateMethods { get; private set; }
+
+    private async Task OnOpenValidationViaValidateMethodsExecuteAsync()
+    {
+        await _uiVisualizerService.ShowDialogAsync(new ValidationWithValidateMethodsViewModel(null, _serviceProvider)
         {
-            ArgumentNullException.ThrowIfNull(uiVisualizerService);
+            DeferValidationUntilFirstSaveCallWrapper = EnableDeferValidationUntilFirstSave
+        });
+    }
 
-            _uiVisualizerService = uiVisualizerService;
+    public TaskCommand OpenValidationViaDataAnnotations { get; private set; }
 
-            OpenValidationViaValidateMethods = new TaskCommand(OnOpenValidationViaValidateMethodsExecuteAsync);
-            OpenValidationViaDataAnnotations = new TaskCommand(OnOpenValidationViaDataAnnotationsExecuteAsync);
-            OpenValidationInModel = new TaskCommand(OnOpenValidationInModelExecuteAsync);
-            OpenValidationInIValidator = new TaskCommand(OnOpenValidationInIValidatorExecuteAsync);
-
-            Title = "Validation example";
-        }
-
-        public bool EnableDeferValidationUntilFirstSave { get; set; }
-
-        public TaskCommand OpenValidationViaValidateMethods { get; private set; }
-
-        private async Task OnOpenValidationViaValidateMethodsExecuteAsync()
+    private async Task OnOpenValidationViaDataAnnotationsExecuteAsync()
+    {
+        await _uiVisualizerService.ShowDialogAsync(new ValidationWithDataAnnotationsViewModel(null, _serviceProvider)
         {
-            await _uiVisualizerService.ShowDialogAsync(new ValidationWithValidateMethodsViewModel(null, EnableDeferValidationUntilFirstSave));
-        }
+            DeferValidationUntilFirstSaveCallWrapper = EnableDeferValidationUntilFirstSave
+        });
+    }
 
-        public TaskCommand OpenValidationViaDataAnnotations { get; private set; }
+    public TaskCommand OpenValidationInModel { get; private set; }
 
-        private async Task OnOpenValidationViaDataAnnotationsExecuteAsync()
+    private async Task OnOpenValidationInModelExecuteAsync()
+    {
+        await _uiVisualizerService.ShowDialogAsync(new ValidationInModelViewModel(null, _serviceProvider)
         {
-            await _uiVisualizerService.ShowDialogAsync(new ValidationWithDataAnnotationsViewModel(null, EnableDeferValidationUntilFirstSave));
-        }
-
-        public TaskCommand OpenValidationInModel { get; private set; }
-
-        private async Task OnOpenValidationInModelExecuteAsync()
-        {
-            await _uiVisualizerService.ShowDialogAsync(new ValidationInModelViewModel(null, EnableDeferValidationUntilFirstSave));
-        }
-
-        public TaskCommand OpenValidationInIValidator { get; private set; }
-
-        private async Task OnOpenValidationInIValidatorExecuteAsync()
-        {
-            await _uiVisualizerService.ShowDialogAsync(new ValidationInIValidatorViewModel(null, EnableDeferValidationUntilFirstSave));
-        }
+            DeferValidationUntilFirstSaveCallWrapper = EnableDeferValidationUntilFirstSave
+        });
     }
 }

@@ -1,12 +1,13 @@
-﻿namespace Catel.Examples.MasterDetail.ViewModels
-{
-    using MVVM;
+﻿namespace Catel.Examples.MasterDetail.ViewModels;
 
-    public class MainViewModel : ViewModelBase
+using System;
+using MVVM;
+
+public class MainViewModel : ViewModelBase
+{
+    public MainViewModel(IServiceProvider serviceProvider)
+        : base(serviceProvider)
     {
-        public MainViewModel()
-        {
-            Title = "Master/detail example";
-        }
+        Title = "Master/detail example";
     }
 }

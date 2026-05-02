@@ -1,12 +1,13 @@
-﻿namespace Catel.Examples.Authentication.ViewModels
-{
-    using MVVM;
+﻿namespace Catel.Examples.Authentication.ViewModels;
 
-    public class ExampleViewModel : ViewModelBase
+using System;
+using MVVM;
+
+public class ExampleViewModel : ViewModelBase
+{
+    public ExampleViewModel(IServiceProvider serviceProvider)
+        : base(serviceProvider)
     {
-        public ExampleViewModel()
-        {
-            Title = "Authentication example";
-        }
+        Title = "Authentication example";
     }
 }

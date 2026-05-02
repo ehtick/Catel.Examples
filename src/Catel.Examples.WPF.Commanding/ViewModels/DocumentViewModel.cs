@@ -1,28 +1,28 @@
-﻿namespace Catel.Examples.Commanding.ViewModels
+﻿namespace Catel.Examples.Commanding.ViewModels;
+
+using System;
+using Catel.MVVM;
+
+public class DocumentViewModel : ViewModelBase
 {
-    using System;
-    using Catel.MVVM;
-
-    public class DocumentViewModel : ViewModelBase
+    public DocumentViewModel(IServiceProvider serviceProvider, ICommandManager commandManager)
+        : base(serviceProvider)
     {
-        public DocumentViewModel(ICommandManager commandManager)
-        {
-            ArgumentNullException.ThrowIfNull(commandManager);
+        ArgumentNullException.ThrowIfNull(commandManager);
 
-            ExampleCommand = new Command(OnExampleCommandExecute);
+        ExampleCommand = new Command(serviceProvider, OnExampleCommandExecute);
 
-            // This will register the VM command with the global command. As soon as the view model gets unloaded,
-            // it will also unsubscribe itself from the global command
-            commandManager.RegisterCommand(Commands.Refresh, ExampleCommand, this);
-        }
+        // This will register the VM command with the global command. As soon as the view model gets unloaded,
+        // it will also unsubscribe itself from the global command
+        commandManager.RegisterCommand(Commands.Refresh, ExampleCommand, this);
+    }
 
-        public DateTime LastCommandExecutionDateTime { get; set; }
+    public DateTime LastCommandExecutionDateTime { get; set; }
 
-        public Command ExampleCommand { get; private set; }
+    public Command ExampleCommand { get; private set; }
 
-        private void OnExampleCommandExecute()
-        {
-            LastCommandExecutionDateTime = DateTime.Now;
-        }
+    private void OnExampleCommandExecute()
+    {
+        LastCommandExecutionDateTime = DateTime.Now;
     }
 }

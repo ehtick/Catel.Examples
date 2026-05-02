@@ -1,7 +1,6 @@
-﻿namespace Catel.Examples.ViewModelLifetime.Services
+﻿namespace Catel.Examples.ViewModelLifetime.Services;
+
+public interface ITabService
 {
-    public interface ITabService
-    {
-        void AddTab(bool closeViewModelOnUnload);
-    }
+    void AddTab(bool closeViewModelOnUnload);
 }

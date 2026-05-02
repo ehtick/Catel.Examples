@@ -1,57 +1,57 @@
-﻿namespace Catel.Examples.NestedUserControls.ViewModels
+﻿namespace Catel.Examples.NestedUserControls.ViewModels;
+
+using System;
+using System.Threading.Tasks;
+using Models;
+using MVVM;
+using Services;
+
+public class DemoWindowViewModel : FeaturedViewModelBase
 {
-    using System;
-    using System.Threading.Tasks;
-    using Models;
-    using MVVM;
-    using Services;
+    private readonly IMessageService _messageService;
 
-    public class DemoWindowViewModel : ViewModelBase
+    public DemoWindowViewModel(IServiceProvider serviceProvider, IMessageService messageService)
+        : base(serviceProvider)
     {
-        private readonly IMessageService _messageService;
+        ArgumentNullException.ThrowIfNull(messageService);
 
-        public DemoWindowViewModel(IMessageService messageService)
-        {
-            ArgumentNullException.ThrowIfNull(messageService);
+        _messageService = messageService;
 
-            _messageService = messageService;
+        Person = new PersonModel();
 
-            Person = new PersonModel();
+        Title = "Person demo";
+    }
 
-            Title = "Person demo";
-        }
+    [Model]
+    public PersonModel Person { get; private set; }
 
-        [Model]
-        public PersonModel Person { get; private set; }
+    [ViewModelToModel("Person")]
+    public string FirstName { get; set; }
 
-        [ViewModelToModel("Person")]
-        public string FirstName { get; set; }
+    [ViewModelToModel("Person")]
+    public string MiddleName { get; set; }
 
-        [ViewModelToModel("Person")]
-        public string MiddleName { get; set; }
+    [ViewModelToModel("Person")]
+    public string LastName { get; set; }
 
-        [ViewModelToModel("Person")]
-        public string LastName { get; set; }
+    protected override async Task<bool> CancelAsync()
+    {
+        await _messageService.ShowInformationAsync("View model canceled");
 
-        protected override async Task<bool> CancelAsync()
-        {
-            await _messageService.ShowInformationAsync("View model canceled");
+        return await base.CancelAsync();
+    }
 
-            return await base.CancelAsync();
-        }
+    protected override async Task<bool> SaveAsync()
+    {
+        await _messageService.ShowInformationAsync("View model saved");
 
-        protected override async Task<bool> SaveAsync()
-        {
-            await _messageService.ShowInformationAsync("View model saved");
+        return await base.SaveAsync();
+    }
 
-            return await base.SaveAsync();
-        }
+    protected override async Task CloseAsync()
+    {
+        await _messageService.ShowInformationAsync("View model closed");
 
-        protected override async Task CloseAsync()
-        {
-            await _messageService.ShowInformationAsync("View model closed");
-
-            await base.CloseAsync();
-        }
+        await base.CloseAsync();
     }
 }

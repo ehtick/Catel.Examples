@@ -1,63 +1,62 @@
-﻿namespace Catel.Examples.NestedUserControls
+﻿namespace Catel.Examples.NestedUserControls;
+
+using System;
+using System.Collections.Generic;
+using Collections;
+using Models;
+
+public static class ModelGenerator
 {
-    using System;
-    using System.Collections.Generic;
-    using Collections;
-    using Models;
+    private static readonly Random _random = new Random();
+    private static readonly Random _priceGenerator = new Random();
 
-    public static class ModelGenerator
+
+    public static HouseModel[] GenerateHouses()
     {
-        private static readonly Random _random = new Random();
-        private static readonly Random _priceGenerator = new Random();
+        return GenerateHouses(_random.Next(1, 5));
+    }
 
+    public static HouseModel[] GenerateHouses(int numberOfHouses)
+    {
+        var houses = new List<HouseModel>();
 
-        public static HouseModel[] GenerateHouses()
+        for (int i = 0; i < numberOfHouses; i++)
         {
-            return GenerateHouses(_random.Next(1, 5));
+            houses.Add(GenerateHouse(string.Format("House {0}", i + 1)));
         }
 
-        public static HouseModel[] GenerateHouses(int numberOfHouses)
+        return houses.ToArray();
+    }
+
+    public static HouseModel GenerateHouse(string name)
+    {
+        var price = (decimal) (_priceGenerator.NextDouble() * 42.42d);
+
+        var house = new HouseModel(name, price);
+        house.Rooms.AddRange(GenerateRooms());
+        return house;
+    }
+
+    public static RoomModel[] GenerateRooms()
+    {
+        return GenerateRooms(_random.Next(1, 5));
+    }
+
+    public static RoomModel[] GenerateRooms(int numberOfRooms)
+    {
+        var rooms = new List<RoomModel>();
+
+        for (int i = 0; i < numberOfRooms; i++)
         {
-            var houses = new List<HouseModel>();
-
-            for (int i = 0; i < numberOfHouses; i++)
-            {
-                houses.Add(GenerateHouse(string.Format("House {0}", i + 1)));
-            }
-
-            return houses.ToArray();
+            rooms.Add(GenerateRoom(string.Format("Room {0}", i + 1)));
         }
 
-        public static HouseModel GenerateHouse(string name)
-        {
-            var price = (decimal) (_priceGenerator.NextDouble() * 42.42d);
+        return rooms.ToArray();
+    }
 
-            var house = new HouseModel(name, price);
-            house.Rooms.AddRange(GenerateRooms());
-            return house;
-        }
-
-        public static RoomModel[] GenerateRooms()
-        {
-            return GenerateRooms(_random.Next(1, 5));
-        }
-
-        public static RoomModel[] GenerateRooms(int numberOfRooms)
-        {
-            var rooms = new List<RoomModel>();
-
-            for (int i = 0; i < numberOfRooms; i++)
-            {
-                rooms.Add(GenerateRoom(string.Format("Room {0}", i + 1)));
-            }
-
-            return rooms.ToArray();
-        }
-
-        public static RoomModel GenerateRoom(string name)
-        {
-            var room = new RoomModel(name);
-            return room;
-        }
+    public static RoomModel GenerateRoom(string name)
+    {
+        var room = new RoomModel(name);
+        return room;
     }
 }

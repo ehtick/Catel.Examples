@@ -1,10 +1,6 @@
-﻿namespace Catel.Examples.PersonApplication.Views
+﻿namespace Catel.Examples.PersonApplication.Views;
+
+public partial class MainWindow
 {
-    public partial class MainWindow
-    {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
-    }
+
 }

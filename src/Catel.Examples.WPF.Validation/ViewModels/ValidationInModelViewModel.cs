@@ -1,33 +1,39 @@
-﻿namespace Catel.Examples.Validation.ViewModels
+﻿namespace Catel.Examples.Validation.ViewModels;
+
+using System;
+using Models;
+using MVVM;
+
+public class ValidationInModelViewModel : FeaturedViewModelBase
 {
-    using Models;
-    using MVVM;
-
-    public class ValidationInModelViewModel : ViewModelBase
+    public ValidationInModelViewModel(ModelWithValidation? person, IServiceProvider serviceProvider)
+        : base(serviceProvider)
     {
-        public ValidationInModelViewModel(ModelWithValidation person = null, bool deferValidationUntilFirstSave = true)
+        if (person is null)
         {
-            if (person is null)
-            {
-                person = new ModelWithValidation();
-            }
-
-            Person = person;
-            DeferValidationUntilFirstSaveCall = deferValidationUntilFirstSave;
-
-            Title = "Validation in model";
+            person = new ModelWithValidation();
         }
 
-        [Model]
-        public ModelWithValidation Person { get; private set; }
+        Person = person;
 
-        [ViewModelToModel("Person")]
-        public string FirstName { get; set; }
-
-        [ViewModelToModel("Person")]
-        public string MiddleName { get; set; }
-
-        [ViewModelToModel("Person")]
-        public string LastName { get; set; }
+        Title = "Validation in model";
     }
+
+    public bool DeferValidationUntilFirstSaveCallWrapper
+    {
+        get => DeferValidationUntilFirstSaveCall;
+        set => DeferValidationUntilFirstSaveCall = value;
+    }
+
+    [Model]
+    public ModelWithValidation Person { get; private set; }
+
+    [ViewModelToModel("Person")]
+    public string FirstName { get; set; }
+
+    [ViewModelToModel("Person")]
+    public string MiddleName { get; set; }
+
+    [ViewModelToModel("Person")]
+    public string LastName { get; set; }
 }

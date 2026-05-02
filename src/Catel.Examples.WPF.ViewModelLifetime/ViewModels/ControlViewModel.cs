@@ -1,12 +1,13 @@
-﻿namespace Catel.Examples.ViewModelLifetime.ViewModels
-{
-    using MVVM;
+﻿namespace Catel.Examples.ViewModelLifetime.ViewModels;
 
-    public class ControlViewModel : ViewModelBase
+using System;
+using MVVM;
+
+public class ControlViewModel : ViewModelBase
+{
+    public ControlViewModel(IServiceProvider serviceProvider)
+        : base(serviceProvider)
     {
-        public ControlViewModel()
-        {
-            Title = "Tab control";
-        }
+        Title = "Tab control";
     }
 }

@@ -1,13 +1,13 @@
-﻿namespace Catel.Examples.MultiLingual.Views
-{
-    using Windows;
+﻿namespace Catel.Examples.MultiLingual.Views;
 
-    public partial class DataWindow
+using System;
+using Catel.Services;
+using Windows;
+
+public partial class DataWindow
+{
+    partial void OnInitializingComponent()
     {
-        public DataWindow()
-            : base(DataWindowMode.OkCancelApply)
-        {
-            InitializeComponent();
-        }
+        Mode = DataWindowMode.OkCancelApply;
     }
 }
