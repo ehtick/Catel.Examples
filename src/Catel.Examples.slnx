@@ -20,10 +20,6 @@
     <File Path="SolutionAssemblyInfo.cs" />
   </Folder>
   <Folder Name="/src/" />
-  <Folder Name="/src/Catel/">
-    <Project Path="../../Catel/src/Catel.Core/Catel.Core.csproj" />
-    <Project Path="../../Catel/src/Catel.MVVM/Catel.MVVM.csproj" />
-  </Folder>
   <Folder Name="/src/Shared/">
     <Project Path="Catel.Examples.Models.Shared/Catel.Examples.Models.Shared.shproj" />
   </Folder>

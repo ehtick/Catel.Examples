@@ -5,7 +5,8 @@
 
     public class ControlViewModel : ViewModelBase
     {
-        public ControlViewModel()
+        public ControlViewModel(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
             Title = "Tab control";
         }

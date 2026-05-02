@@ -4,9 +4,10 @@
     using Models;
     using MVVM;
 
-    public class DataWindowViewModel : ViewModelBase
+    public class DataWindowViewModel : FeaturedViewModelBase
     {
-        public DataWindowViewModel(Language language)
+        public DataWindowViewModel(Language language, IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
             ArgumentNullException.ThrowIfNull(language);
 

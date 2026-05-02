@@ -19,6 +19,7 @@
         public MainViewModel(IServiceProvider serviceProvider, IUIVisualizerService uiVisualizerService, 
             IBusyIndicatorService busyIndicatorService,
             ILanguageService languageService)
+            : base(serviceProvider)
         {
             ArgumentNullException.ThrowIfNull(uiVisualizerService);
             ArgumentNullException.ThrowIfNull(busyIndicatorService);

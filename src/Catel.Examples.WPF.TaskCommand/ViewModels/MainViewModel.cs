@@ -10,6 +10,7 @@
     public class MainViewModel : ViewModelBase
     {
         public MainViewModel(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
             LoadSomethingCommand = new ProgressiveTaskCommand<PercentProgress>(serviceProvider, LoadSomethingAsync, reportProgress: ReportLoadSomethingProgress);
 

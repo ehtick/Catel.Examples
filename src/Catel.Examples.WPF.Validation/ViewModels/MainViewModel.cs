@@ -11,6 +11,7 @@
         private readonly IUIVisualizerService _uiVisualizerService;
 
         public MainWindowViewModel(IServiceProvider serviceProvider, IUIVisualizerService uiVisualizerService)
+            : base(serviceProvider)
         {
             ArgumentNullException.ThrowIfNull(uiVisualizerService);
             _serviceProvider = serviceProvider;

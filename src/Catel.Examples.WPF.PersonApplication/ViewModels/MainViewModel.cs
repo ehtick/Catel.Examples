@@ -3,7 +3,6 @@
     using System;
     using System.Collections.ObjectModel;
     using System.Threading.Tasks;
-    using Microsoft.Extensions.DependencyInjection;
     using Models;
     using MVVM;
     using Properties;
@@ -15,7 +14,9 @@
         private readonly IMessageService _messageService;
         private readonly IUIVisualizerService _uiVisualizerService;
 
-        public MainWindowViewModel(IServiceProvider serviceProvider, IUIVisualizerService uiVisualizerService, IMessageService messageService)
+        public MainWindowViewModel(IServiceProvider serviceProvider, IUIVisualizerService uiVisualizerService, 
+            IMessageService messageService)
+            : base(serviceProvider)
         {
             ArgumentNullException.ThrowIfNull(uiVisualizerService);
             ArgumentNullException.ThrowIfNull(messageService);

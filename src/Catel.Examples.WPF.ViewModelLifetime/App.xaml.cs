@@ -19,8 +19,8 @@
             var hostBuilder = new HostBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddCatelCoreServices();
-                    services.AddCatelMvvmServices();
+                    services.AddCatelCore();
+                    services.AddCatelMvvm();
 
                     // TODO: How to make sure this is the same instance?
                     services.AddSingleton<MainWindow>();

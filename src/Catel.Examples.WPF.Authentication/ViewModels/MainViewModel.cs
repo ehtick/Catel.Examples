@@ -14,6 +14,7 @@
 
         public MainViewModel(IServiceProvider serviceProvider, IUIVisualizerService uiVisualizerService, 
             IAuthenticationProvider authenticationProvider)
+            : base(serviceProvider)
         {
             ArgumentNullException.ThrowIfNull(uiVisualizerService);
             ArgumentNullException.ThrowIfNull(authenticationProvider);

@@ -1,12 +1,14 @@
 ﻿namespace Catel.Examples.NestedUserControls.ViewModels
 {
+    using System;
     using System.Collections.ObjectModel;
     using Models;
     using MVVM;
 
     public class MainViewModel : ViewModelBase
     {
-        public MainViewModel()
+        public MainViewModel(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
             Houses = new ObservableCollection<HouseModel>(ModelGenerator.GenerateHouses());
 

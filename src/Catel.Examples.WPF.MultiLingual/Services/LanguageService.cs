@@ -1,13 +1,15 @@
 ﻿namespace Catel.Examples.MultiLingual.Services
 {
+    using System.Collections.Generic;
     using System.Globalization;
     using Catel.Services;
     using Microsoft.Extensions.Logging;
 
     public class LanguageService : Catel.Services.LanguageService
     {
-        public LanguageService(ILogger<Catel.Services.LanguageService> logger)
-            : base(logger)
+        public LanguageService(ILogger<Catel.Services.LanguageService> logger,
+            IEnumerable<ILanguageSource> languageSources)
+            : base(logger, languageSources)
         {
             
         }

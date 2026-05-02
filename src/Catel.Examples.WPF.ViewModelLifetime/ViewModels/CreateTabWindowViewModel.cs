@@ -5,7 +5,8 @@
 
     public class CreateTabWindowViewModel : ViewModelBase
     {
-        public CreateTabWindowViewModel()
+        public CreateTabWindowViewModel(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
             Title = "Create new tab";
         }

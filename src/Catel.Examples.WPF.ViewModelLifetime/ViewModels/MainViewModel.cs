@@ -11,18 +11,21 @@
     public class MainViewModel : ViewModelBase
     {
         private readonly ITabService _tabService;
+        private readonly IViewModelFactory _viewModelFactory;
         private readonly IUIVisualizerService _uiVisualizerService;
 
         private readonly DispatcherTimer _timer = new DispatcherTimer();
 
-        public MainViewModel(IServiceProvider serviceProvider, IUIVisualizerService uiVisualizerService, ITabService tabService)
+        public MainViewModel(IServiceProvider serviceProvider, IUIVisualizerService uiVisualizerService, 
+            ITabService tabService, IViewModelFactory viewModelFactory)
+            : base(serviceProvider)
         {
             ArgumentNullException.ThrowIfNull(uiVisualizerService);
             ArgumentNullException.ThrowIfNull(tabService);
 
             _uiVisualizerService = uiVisualizerService;
             _tabService = tabService;
-
+            _viewModelFactory = viewModelFactory;
             _timer.Tick += OnTimerTick;
             _timer.Interval = new TimeSpan(0, 0, 0, 0, 500);
             _timer.Start();
@@ -49,7 +52,7 @@
         /// </summary>
         private async Task OnAddTabExecuteAsync()
         {
-            var vm = new CreateTabWindowViewModel();
+            var vm = _viewModelFactory.CreateRequiredViewModel<CreateTabWindowViewModel>(null);
             var result = await _uiVisualizerService.ShowDialogAsync(vm);
 
             if (result.DialogResult ?? false)

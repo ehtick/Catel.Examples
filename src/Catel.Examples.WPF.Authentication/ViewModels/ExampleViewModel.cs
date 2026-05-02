@@ -5,7 +5,8 @@
 
     public class ExampleViewModel : ViewModelBase
     {
-        public ExampleViewModel()
+        public ExampleViewModel(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
             Title = "Authentication example";
         }

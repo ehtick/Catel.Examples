@@ -18,8 +18,8 @@
             var hostBuilder = new HostBuilder()
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddCatelCoreServices();
-                    services.AddCatelMvvmServices();
+                    services.AddCatelCore();
+                    services.AddCatelMvvm();
 
                     services.AddLogging(x =>
                     {

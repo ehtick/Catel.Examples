@@ -1,5 +1,6 @@
 ﻿namespace Catel.Examples.MasterDetail.ViewModels
 {
+    using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Threading.Tasks;
@@ -9,7 +10,8 @@
 
     public class PersonMasterViewModel : ViewModelBase
     {
-        public PersonMasterViewModel()
+        public PersonMasterViewModel(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
             Title = "Persons";
         }

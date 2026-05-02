@@ -6,6 +6,7 @@
     public class MainViewModel : ViewModelBase
     {
         public MainViewModel(IServiceProvider serviceProvider)
+            : base(serviceProvider)
         {
             Title = "Commanding example";
         }
