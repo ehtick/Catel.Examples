@@ -1,61 +1,60 @@
-﻿namespace Catel.Examples.Commanding.CommandContainers
+﻿namespace Catel.Examples.Commanding.CommandContainers;
+
+using System;
+using System.Threading.Tasks;
+using MVVM;
+using Services;
+
+public class GlobalActionCommandContainer : CommandContainerBase
 {
-    using System;
-    using System.Threading.Tasks;
-    using MVVM;
-    using Services;
+    private readonly IMessageService _messageService;
 
-    public class GlobalActionCommandContainer : CommandContainerBase
+    public GlobalActionCommandContainer(IServiceProvider serviceProvider, ICommandManager commandManager, IMessageService messageService) 
+        : base(Commands.GlobalAction, commandManager, serviceProvider)
     {
-        private readonly IMessageService _messageService;
+        ArgumentNullException.ThrowIfNull(messageService);
 
-        public GlobalActionCommandContainer(IServiceProvider serviceProvider, ICommandManager commandManager, IMessageService messageService) 
-            : base(Commands.GlobalAction, commandManager, serviceProvider)
-        {
-            ArgumentNullException.ThrowIfNull(messageService);
-
-            _messageService = messageService;
-        }
-
-        public override async Task ExecuteAsync(object parameter)
-        {
-            await _messageService.ShowAsync("Global action from command in command container");
-        }
+        _messageService = messageService;
     }
 
-    public class Test1CommandContainer : CommandContainerBase
+    public override async Task ExecuteAsync(object parameter)
     {
-        private readonly IMessageService _messageService;
+        await _messageService.ShowAsync("Global action from command in command container");
+    }
+}
 
-        public Test1CommandContainer(IServiceProvider serviceProvider, ICommandManager commandManager, IMessageService messageService) 
-            : base(Commands.Test1, commandManager, serviceProvider)
-        {
-            ArgumentNullException.ThrowIfNull(messageService);
+public class Test1CommandContainer : CommandContainerBase
+{
+    private readonly IMessageService _messageService;
 
-            _messageService = messageService;
-        }
+    public Test1CommandContainer(IServiceProvider serviceProvider, ICommandManager commandManager, IMessageService messageService) 
+        : base(Commands.Test1, commandManager, serviceProvider)
+    {
+        ArgumentNullException.ThrowIfNull(messageService);
 
-        public override async Task ExecuteAsync(object parameter)
-        {
-            await _messageService.ShowAsync("Test1 from command in command container");
-        }
+        _messageService = messageService;
     }
 
-    public class Test2CommandContainer : CommandContainerBase
+    public override async Task ExecuteAsync(object parameter)
     {
-        private readonly IMessageService _messageService;
+        await _messageService.ShowAsync("Test1 from command in command container");
+    }
+}
 
-        public Test2CommandContainer(IServiceProvider serviceProvider, ICommandManager commandManager, IMessageService messageService) 
-            : base(Commands.Test2, commandManager, serviceProvider)
-        {
-            ArgumentNullException.ThrowIfNull(messageService);
+public class Test2CommandContainer : CommandContainerBase
+{
+    private readonly IMessageService _messageService;
 
-            _messageService = messageService;
-        }
+    public Test2CommandContainer(IServiceProvider serviceProvider, ICommandManager commandManager, IMessageService messageService) 
+        : base(Commands.Test2, commandManager, serviceProvider)
+    {
+        ArgumentNullException.ThrowIfNull(messageService);
 
-        public override async Task ExecuteAsync(object parameter)
-        {
-            await _messageService.ShowAsync("Test2 from command in command container");
-        }
+        _messageService = messageService;
+    }
+
+    public override async Task ExecuteAsync(object parameter)
+    {
+        await _messageService.ShowAsync("Test2 from command in command container");
     }
 }

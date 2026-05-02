@@ -1,24 +1,23 @@
-﻿namespace Catel.Examples.MultiLingual.ViewModels
+﻿namespace Catel.Examples.MultiLingual.ViewModels;
+
+using System;
+using Models;
+using MVVM;
+
+public class DataWindowViewModel : FeaturedViewModelBase
 {
-    using System;
-    using Models;
-    using MVVM;
-
-    public class DataWindowViewModel : FeaturedViewModelBase
+    public DataWindowViewModel(Language language, IServiceProvider serviceProvider)
+        : base(serviceProvider)
     {
-        public DataWindowViewModel(Language language, IServiceProvider serviceProvider)
-            : base(serviceProvider)
-        {
-            ArgumentNullException.ThrowIfNull(language);
+        ArgumentNullException.ThrowIfNull(language);
 
-            Language = language;
+        Language = language;
 
-            Title = "MultiLingual example";
-        }
-
-        [Model]
-        [Fody.Expose("Name")]
-        [Fody.Expose("Code")]
-        private Language Language { get; set; }
+        Title = "MultiLingual example";
     }
+
+    [Model]
+    [Fody.Expose("Name")]
+    [Fody.Expose("Code")]
+    private Language Language { get; set; }
 }

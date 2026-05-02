@@ -1,11 +1,10 @@
-﻿namespace Catel.Examples.Models
+﻿namespace Catel.Examples.Models;
+
+public enum Gender
 {
-    public enum Gender
-    {
-        Unknown,
+    Unknown,
 
-        Male,
+    Male,
 
-        Female
-    }
+    Female
 }

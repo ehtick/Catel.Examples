@@ -1,14 +1,13 @@
-﻿namespace Catel.Examples.MultiLingual.Views
-{
-    using System;
-    using Catel.Services;
+﻿namespace Catel.Examples.MultiLingual.Views;
 
-    public partial class MainWindow
+using System;
+using Catel.Services;
+
+public partial class MainWindow
+{
+    public MainWindow(IServiceProvider serviceProvider, IWrapControlService wrapControlService, ILanguageService languageService)
+        : base(serviceProvider, wrapControlService, languageService)
     {
-        public MainWindow(IServiceProvider serviceProvider, IWrapControlService wrapControlService, ILanguageService languageService)
-            : base(serviceProvider, wrapControlService, languageService)
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

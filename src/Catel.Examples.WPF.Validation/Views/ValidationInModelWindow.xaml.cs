@@ -1,15 +1,14 @@
-﻿namespace Catel.Examples.Validation.Views
-{
-    using System;
-    using Catel.Services;
+﻿namespace Catel.Examples.Validation.Views;
 
-    public partial class ValidationInModelWindow
+using System;
+using Catel.Services;
+
+public partial class ValidationInModelWindow
+{
+    public ValidationInModelWindow(IServiceProvider serviceProvider, IWrapControlService wrapControlService,
+        ILanguageService languageService)
+        : base(serviceProvider, wrapControlService, languageService)
     {
-        public ValidationInModelWindow(IServiceProvider serviceProvider, IWrapControlService wrapControlService,
-            ILanguageService languageService)
-            : base(serviceProvider, wrapControlService, languageService)
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

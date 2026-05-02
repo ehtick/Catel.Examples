@@ -1,16 +1,15 @@
-﻿namespace Catel.Examples.NestedUserControls.Views
-{
-    using System;
-    using Catel.MVVM;
-    using Catel.Services;
+﻿namespace Catel.Examples.NestedUserControls.Views;
 
-    public partial class RoomView 
+using System;
+using Catel.MVVM;
+using Catel.Services;
+
+public partial class RoomView 
+{
+    public RoomView(IServiceProvider serviceProvider, IViewModelWrapperService viewModelWrapperService,
+        IDataContextSubscriptionService dataContextSubscriptionService)
+        : base(serviceProvider, viewModelWrapperService, dataContextSubscriptionService)
     {
-        public RoomView(IServiceProvider serviceProvider, IViewModelWrapperService viewModelWrapperService,
-            IDataContextSubscriptionService dataContextSubscriptionService)
-            : base(serviceProvider, viewModelWrapperService, dataContextSubscriptionService)
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

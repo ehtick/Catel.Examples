@@ -1,10 +1,9 @@
-﻿namespace Catel.Examples.Commanding.Views
-{
-    using System;
-    using Catel.MVVM;
-    using Catel.Services;
+﻿namespace Catel.Examples.Commanding.Views;
 
-    public partial class MainWindow
-    {
-    }
+using System;
+using Catel.MVVM;
+using Catel.Services;
+
+public partial class MainWindow
+{
 }

@@ -1,69 +1,68 @@
-﻿namespace Catel.Examples.Behaviors.ViewModels
+﻿namespace Catel.Examples.Behaviors.ViewModels;
+
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using MVVM;
+using Services;
+
+public class MainViewModel : ViewModelBase
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using MVVM;
-    using Services;
+    private readonly IMessageService _messageService;
 
-    public class MainViewModel : ViewModelBase
+    public MainViewModel(IServiceProvider serviceProvider, IMessageService messageService)
+        : base(serviceProvider)
     {
-        private readonly IMessageService _messageService;
+        ArgumentNullException.ThrowIfNull(messageService);
 
-        public MainViewModel(IServiceProvider serviceProvider, IMessageService messageService)
-            : base(serviceProvider)
+        _messageService = messageService;
+
+        DoubleClickToCommandExample = new TaskCommand(serviceProvider, OnDoubleClickToCommandExampleExecuteAsync);
+        EventToCommandForLostFocus = new TaskCommand(serviceProvider, OnEventToCommandForLostFocusExecuteAsync);
+        KeyPressToCommandExample = new TaskCommand(serviceProvider, OnKeyPressToCommandExampleExecuteAsync);
+
+        Title = "Behaviors";
+
+        ListItems = new[]
         {
-            ArgumentNullException.ThrowIfNull(messageService);
+            "1",
+            "2",
+            "3",
+            "4"
+        };
+    }
 
-            _messageService = messageService;
+    public string DelayBindingUpdateValue { get; set; }
 
-            DoubleClickToCommandExample = new TaskCommand(serviceProvider, OnDoubleClickToCommandExampleExecuteAsync);
-            EventToCommandForLostFocus = new TaskCommand(serviceProvider, OnEventToCommandForLostFocusExecuteAsync);
-            KeyPressToCommandExample = new TaskCommand(serviceProvider, OnKeyPressToCommandExampleExecuteAsync);
+    public string UpdateBindingOnTextChangedValue { get; set; }
 
-            Title = "Behaviors";
+    public IReadOnlyList<string> ListItems { get; private set; }
 
-            ListItems = new[]
-            {
-                "1",
-                "2",
-                "3",
-                "4"
-            };
-        }
+    public double NumericValue { get; set; }
 
-        public string DelayBindingUpdateValue { get; set; }
+    public TaskCommand DoubleClickToCommandExample { get; private set; }
 
-        public string UpdateBindingOnTextChangedValue { get; set; }
+    private async Task OnDoubleClickToCommandExampleExecuteAsync()
+    {
+        await _messageService.ShowAsync("Received double click");
+    }
 
-        public IReadOnlyList<string> ListItems { get; private set; }
+    public TaskCommand EventToCommandForLostFocus { get; private set; }
 
-        public double NumericValue { get; set; }
+    private async Task OnEventToCommandForLostFocusExecuteAsync()
+    {
+        await _messageService.ShowAsync("LostFocus event occurred");
+    }
 
-        public TaskCommand DoubleClickToCommandExample { get; private set; }
+    public TaskCommand KeyPressToCommandExample { get; private set; }
 
-        private async Task OnDoubleClickToCommandExampleExecuteAsync()
-        {
-            await _messageService.ShowAsync("Received double click");
-        }
+    private async Task OnKeyPressToCommandExampleExecuteAsync()
+    {
+        await _messageService.ShowAsync("You just pressed the [Ctrl] + [Backspace] keys");
+    }
 
-        public TaskCommand EventToCommandForLostFocus { get; private set; }
-
-        private async Task OnEventToCommandForLostFocusExecuteAsync()
-        {
-            await _messageService.ShowAsync("LostFocus event occurred");
-        }
-
-        public TaskCommand KeyPressToCommandExample { get; private set; }
-
-        private async Task OnKeyPressToCommandExampleExecuteAsync()
-        {
-            await _messageService.ShowAsync("You just pressed the [Ctrl] + [Backspace] keys");
-        }
-
-        private async void OnDelayBindingUpdateValueChanged()
-        {
-            await _messageService.ShowAsync($"New value is {DelayBindingUpdateValue}");
-        }
+    private async void OnDelayBindingUpdateValueChanged()
+    {
+        await _messageService.ShowAsync($"New value is {DelayBindingUpdateValue}");
     }
 }

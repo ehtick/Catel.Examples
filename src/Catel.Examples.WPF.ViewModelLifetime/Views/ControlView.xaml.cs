@@ -1,16 +1,15 @@
-﻿namespace Catel.Examples.ViewModelLifetime.Views
-{
-    using System;
-    using Catel.MVVM;
-    using Catel.Services;
+﻿namespace Catel.Examples.ViewModelLifetime.Views;
 
-    public partial class ControlView
+using System;
+using Catel.MVVM;
+using Catel.Services;
+
+public partial class ControlView
+{
+    public ControlView(IServiceProvider serviceProvider, IViewModelWrapperService viewModelWrapperService,
+        IDataContextSubscriptionService dataContextSubscriptionService)
+        : base(serviceProvider, viewModelWrapperService, dataContextSubscriptionService)
     {
-        public ControlView(IServiceProvider serviceProvider, IViewModelWrapperService viewModelWrapperService,
-            IDataContextSubscriptionService dataContextSubscriptionService)
-            : base(serviceProvider, viewModelWrapperService, dataContextSubscriptionService)
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

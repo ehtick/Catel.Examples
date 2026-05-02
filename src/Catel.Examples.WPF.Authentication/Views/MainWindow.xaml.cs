@@ -1,6 +1,5 @@
-﻿namespace Catel.Examples.Authentication.Views
+﻿namespace Catel.Examples.Authentication.Views;
+
+public partial class MainWindow
 {
-    public partial class MainWindow
-    {
-    }
 }

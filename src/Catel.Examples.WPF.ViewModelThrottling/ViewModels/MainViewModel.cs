@@ -1,69 +1,68 @@
-﻿namespace Catel.Examples.ViewModelThrottling.ViewModels
+﻿namespace Catel.Examples.ViewModelThrottling.ViewModels;
+
+using System;
+using System.Threading.Tasks;
+using System.Windows.Media;
+using System.Windows.Threading;
+using MVVM;
+
+public class MainViewModel : FeaturedViewModelBase
 {
-    using System;
-    using System.Threading.Tasks;
-    using System.Windows.Media;
-    using System.Windows.Threading;
-    using MVVM;
+    private readonly DispatcherTimer _counterTimer = new DispatcherTimer();
+    private readonly DispatcherTimer _frameRateTimer = new DispatcherTimer();
 
-    public class MainViewModel : FeaturedViewModelBase
+    private int _frameRateCounter;
+
+    public MainViewModel(IServiceProvider serviceProvider)
+        : base(serviceProvider)
     {
-        private readonly DispatcherTimer _counterTimer = new DispatcherTimer();
-        private readonly DispatcherTimer _frameRateTimer = new DispatcherTimer();
+        Title = "View Model Throttling example";
+    }
 
-        private int _frameRateCounter;
+    public int FrameRate { get; set; }
 
-        public MainViewModel(IServiceProvider serviceProvider)
-            : base(serviceProvider)
-        {
-            Title = "View Model Throttling example";
-        }
+    public int Counter { get; set; }
 
-        public int FrameRate { get; set; }
+    public int Throttling { get; set; }
 
-        public int Counter { get; set; }
+    private void OnThrottlingChanged()
+    {
+        ThrottlingRate = new TimeSpan(0, 0, 0, 0, Throttling);
+    }
 
-        public int Throttling { get; set; }
+    protected override async Task InitializeAsync()
+    {
+        _frameRateTimer.Interval = new TimeSpan(0, 0, 0, 1);
+        _frameRateTimer.Tick += (sender, e) => OnFrameRateCounterElapsed();
+        _frameRateTimer.Start();
 
-        private void OnThrottlingChanged()
-        {
-            ThrottlingRate = new TimeSpan(0, 0, 0, 0, Throttling);
-        }
+        _counterTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
+        _counterTimer.Tick += (sender, e) => OnCounterTimerElapsed();
+        _counterTimer.Start();
 
-        protected override async Task InitializeAsync()
-        {
-            _frameRateTimer.Interval = new TimeSpan(0, 0, 0, 1);
-            _frameRateTimer.Tick += (sender, e) => OnFrameRateCounterElapsed();
-            _frameRateTimer.Start();
+        CompositionTarget.Rendering += OnRendering;
+    }
 
-            _counterTimer.Interval = new TimeSpan(0, 0, 0, 0, 10);
-            _counterTimer.Tick += (sender, e) => OnCounterTimerElapsed();
-            _counterTimer.Start();
+    protected override async Task CloseAsync()
+    {
+        CompositionTarget.Rendering -= OnRendering;
 
-            CompositionTarget.Rendering += OnRendering;
-        }
+        _counterTimer.Stop();
+    }
 
-        protected override async Task CloseAsync()
-        {
-            CompositionTarget.Rendering -= OnRendering;
+    private void OnRendering(object sender, EventArgs e)
+    {
+        _frameRateCounter++;
+    }
 
-            _counterTimer.Stop();
-        }
+    private void OnFrameRateCounterElapsed()
+    {
+        FrameRate = _frameRateCounter;
+        _frameRateCounter = 0;
+    }
 
-        private void OnRendering(object sender, EventArgs e)
-        {
-            _frameRateCounter++;
-        }
-
-        private void OnFrameRateCounterElapsed()
-        {
-            FrameRate = _frameRateCounter;
-            _frameRateCounter = 0;
-        }
-
-        private void OnCounterTimerElapsed()
-        {
-            Counter++;
-        }
+    private void OnCounterTimerElapsed()
+    {
+        Counter++;
     }
 }

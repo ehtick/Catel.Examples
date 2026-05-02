@@ -1,56 +1,55 @@
-﻿namespace Catel.Examples.Validation
-{
-    using System.Windows;
-    using Catel.Examples.Validation.Views;
-    using Data;
-    using IoC;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using Microsoft.Extensions.Logging;
-    using Validation;
+﻿namespace Catel.Examples.Validation;
 
-    public partial class App : Application
-    {
+using System.Windows;
+using Catel.Examples.Validation.Views;
+using Data;
+using IoC;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Validation;
+
+public partial class App : Application
+{
 #pragma warning disable IDISP006 // Implement IDisposable
-        private readonly IHost _host;
+    private readonly IHost _host;
 #pragma warning restore IDISP006 // Implement IDisposable
 
-        public App()
-        {
-            var hostBuilder = new HostBuilder()
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.AddCatelCore();
-                    services.AddCatelMvvm();
-
-                    services.AddLogging(x =>
-                    {
-                        x.AddConsole();
-                        x.AddDebug();
-                    });
-                });
-
-            _host = hostBuilder.Build();
-
-            IoCContainer.ServiceProvider = _host.Services;
-        }
-
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-
-            var mainWindow = ActivatorUtilities.CreateInstance<MainWindow>(_host.Services);
-            mainWindow.Show();
-        }
-
-        protected override async void OnExit(ExitEventArgs e)
-        {
-            using (_host)
+    public App()
+    {
+        var hostBuilder = new HostBuilder()
+            .ConfigureServices((hostContext, services) =>
             {
-                await _host.StopAsync();
-            }
+                services.AddCatelCore();
+                services.AddCatelMvvm();
 
-            base.OnExit(e);
+                services.AddLogging(x =>
+                {
+                    x.AddConsole();
+                    x.AddDebug();
+                });
+            });
+
+        _host = hostBuilder.Build();
+
+        IoCContainer.ServiceProvider = _host.Services;
+    }
+
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        base.OnStartup(e);
+
+        var mainWindow = ActivatorUtilities.CreateInstance<MainWindow>(_host.Services);
+        mainWindow.Show();
+    }
+
+    protected override async void OnExit(ExitEventArgs e)
+    {
+        using (_host)
+        {
+            await _host.StopAsync();
         }
+
+        base.OnExit(e);
     }
 }

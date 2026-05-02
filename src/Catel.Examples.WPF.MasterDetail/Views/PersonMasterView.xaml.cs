@@ -1,16 +1,15 @@
-﻿namespace Catel.Examples.MasterDetail.Views
-{
-    using System;
-    using Catel.MVVM;
-    using Catel.Services;
+﻿namespace Catel.Examples.MasterDetail.Views;
 
-    public partial class PersonMasterView
+using System;
+using Catel.MVVM;
+using Catel.Services;
+
+public partial class PersonMasterView
+{
+    public PersonMasterView(IServiceProvider serviceProvider, IViewModelWrapperService viewModelWrapperService,
+        IDataContextSubscriptionService dataContextSubscriptionService)
+        : base(serviceProvider, viewModelWrapperService, dataContextSubscriptionService)
     {
-        public PersonMasterView(IServiceProvider serviceProvider, IViewModelWrapperService viewModelWrapperService,
-            IDataContextSubscriptionService dataContextSubscriptionService)
-            : base(serviceProvider, viewModelWrapperService, dataContextSubscriptionService)
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }
