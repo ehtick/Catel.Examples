@@ -26,6 +26,7 @@ public class MainViewModel : ViewModelBase
         _uiVisualizerService = uiVisualizerService;
         _tabService = tabService;
         _viewModelFactory = viewModelFactory;
+
         _timer.Tick += OnTimerTick;
         _timer.Interval = new TimeSpan(0, 0, 0, 0, 500);
         _timer.Start();
