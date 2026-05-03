@@ -47,18 +47,22 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
+        var serviceProvider = _host.Services;
+
+        serviceProvider.CreateTypesThatMustBeConstructedAtStartup();
+
         TypeCache.InitializeTypes(typeof(App).Assembly);
 
         // Registered as command
-        var commandManager = _host.Services.GetRequiredService<ICommandManager>();
+        var commandManager = serviceProvider.GetRequiredService<ICommandManager>();
         commandManager.CreateCommand(Commands.Refresh, new InputGesture(Key.F5));
 
         // Registered in command container
-        commandManager.CreateCommandWithGesture(_host.Services, typeof(Commands), Commands.GlobalAction);
-        commandManager.CreateCommandWithGesture(_host.Services, typeof(Commands), Commands.Test1);
-        commandManager.CreateCommandWithGesture(_host.Services, typeof(Commands), Commands.Test2);
+        commandManager.CreateCommandWithGesture(serviceProvider, typeof(Commands), Commands.GlobalAction);
+        commandManager.CreateCommandWithGesture(serviceProvider, typeof(Commands), Commands.Test1);
+        commandManager.CreateCommandWithGesture(serviceProvider, typeof(Commands), Commands.Test2);
 
-        var mainWindow = ActivatorUtilities.CreateInstance<MainWindow>(_host.Services);
+        var mainWindow = ActivatorUtilities.CreateInstance<MainWindow>(serviceProvider);
         mainWindow.Show();
     }
 

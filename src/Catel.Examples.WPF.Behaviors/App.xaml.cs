@@ -36,7 +36,11 @@ public partial class App
 
     protected override void OnStartup(StartupEventArgs e)
     {
-        var viewLocator = _host.Services.GetRequiredService<IViewLocator>();
+        var serviceProvider = _host.Services;
+
+        serviceProvider.CreateTypesThatMustBeConstructedAtStartup();
+
+        var viewLocator = serviceProvider.GetRequiredService<IViewLocator>();
 
         viewLocator.NamingConventions.Add("[UP].Views.[VM]");
         viewLocator.NamingConventions.Add("[UP].Views.LogicInBehavior.[VM]");
@@ -46,13 +50,13 @@ public partial class App
         viewLocator.NamingConventions.Add("[UP].Views.LogicInViewBase.[VM]View");
         viewLocator.NamingConventions.Add("[UP].Views.LogicInViewBase.[VM]Window");
 
-        var viewModelLocator = _host.Services.GetRequiredService<IViewLocator>();
+        var viewModelLocator = serviceProvider.GetRequiredService<IViewLocator>();
 
         viewModelLocator.NamingConventions.Add("Catel.Examples.AdvancedDemo.ViewModels.[VW]ViewModel");
 
         base.OnStartup(e);
 
-        var mainWindow = ActivatorUtilities.CreateInstance<MainWindow>(_host.Services);
+        var mainWindow = ActivatorUtilities.CreateInstance<MainWindow>(serviceProvider);
         mainWindow.Show();
     }
 
